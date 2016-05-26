@@ -1,4 +1,4 @@
-//     JavaScript Expression Parser (JSEP) 0.3.0
+//     JavaScript Expression Parser (JSEP) 0.3.1-beta
 //     JSEP may be freely distributed under the MIT License
 //     http://jsep.from.so/
 
@@ -350,6 +350,7 @@
 								case 'b': str += '\b'; break;
 								case 'f': str += '\f'; break;
 								case 'v': str += '\x0B'; break;
+								case '\\': str += '\\'; break;
 							}
 						} else {
 							str += ch;
@@ -545,7 +546,7 @@
 		};
 
 	// To be filled in by the template
-	jsep.version = '0.3.0';
+	jsep.version = '0.3.1-beta';
 	jsep.toString = function() { return 'JavaScript Expression Parser (JSEP) v' + jsep.version; };
 
 	/**
