@@ -466,11 +466,7 @@
 								type: MEMBER_EXP,
 								computed: false,
 								object: node,
-								property: {
-									type : LITERAL,
-									value : id.name,
-									raw : '\'' + id.name + '\''
-								}
+                                property: id
 							};
 						} else if(ch_i === OBRACK_CODE) {
 							node = {
