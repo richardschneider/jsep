@@ -38,6 +38,13 @@ First, run `npm install jsep`. Then, in your source file:
     // Remove a unary operator
     jsep.removeUnaryOp("~");
 
+####Implicit multiplication
+    jsep.('a b', { implicitMultiplication: true});
+    
+is equalivalent to 
+
+    jsep.('a * b');
+
 ###License
 jsep is under the MIT license. See LICENSE file.
 
