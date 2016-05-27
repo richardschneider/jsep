@@ -187,9 +187,12 @@
 						to_check = to_check.substr(0, --tc_len);
 					}
 
-                    // If something to the right and implicit multiplication, then binary op is '*'.
-                    if (options.implicitMultiplication && index < length)
-                        return '*';
+                    // If identifier or supexpression to the right and implicit multiplication, then binary op is '*'.
+                    if (options.implicitMultiplication && index < length) {
+                        var ch = exprICode(index);
+                        if (isIdentifierStart(ch) || ch == OPAREN_CODE || ch == OBRACK_CODE)
+                            return '*';
+                    }
 
 					return false;
 				},

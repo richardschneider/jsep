@@ -127,6 +127,7 @@ test('Implicit multiplication', function() {
         left: {name: 'a'},
         right: {name: 'b'}
     }, { implicitMultiplication: true });
+    test_parser("a( b + c )", {}, { implicitMultiplication: true });
 });
 
 test('Bad Numbers', function() {
