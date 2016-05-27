@@ -1,4 +1,4 @@
-//     JavaScript Expression Parser (JSEP) 0.3.0
+//     JavaScript Expression Parser (JSEP) 0.3.1-beta
 //     JSEP may be freely distributed under the MIT License
 //     http://jsep.from.so/
 
@@ -325,7 +325,7 @@
 
 					return {
 						type: LITERAL,
-						value: parseFloat(number),
+						value: jsep.numberMaker(number),
 						raw: number
 					};
 				},
@@ -350,6 +350,7 @@
 								case 'b': str += '\b'; break;
 								case 'f': str += '\f'; break;
 								case 'v': str += '\x0B'; break;
+								case '\\': str += '\\'; break;
 							}
 						} else {
 							str += ch;
@@ -545,7 +546,7 @@
 		};
 
 	// To be filled in by the template
-	jsep.version = '0.3.0';
+	jsep.version = '0.3.1-beta';
 	jsep.toString = function() { return 'JavaScript Expression Parser (JSEP) v' + jsep.version; };
 
 	/**
@@ -594,6 +595,17 @@
 		}
 		return this;
 	};
+
+    /**
+     * Convert a numeric literal to a number.  The default implementation is to use parseFloat.
+     *
+     * @method jsep.numberMaker
+     * @param {string} numeric The string representation of a number.
+     * @return The numeric representation of the literal.
+     */
+    jsep.numberMaker = function(numeric) {
+        return parseFloat(numeric);
+    };
 
 	// In desktop environments, have a way to restore the old value for `jsep`
 	if (typeof exports === 'undefined') {

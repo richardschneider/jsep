@@ -325,7 +325,7 @@
 
 					return {
 						type: LITERAL,
-						value: parseFloat(number),
+						value: jsep.numberMaker(number),
 						raw: number
 					};
 				},
@@ -595,6 +595,17 @@
 		}
 		return this;
 	};
+
+    /**
+     * Convert a numeric literal to a number.  The default implementation is to use parseFloat.
+     *
+     * @method jsep.numberMaker
+     * @param {string} numeric The string representation of a number.
+     * @return The numeric representation of the literal.
+     */
+    jsep.numberMaker = function(numeric) {
+        return parseFloat(numeric);
+    };
 
 	// In desktop environments, have a way to restore the old value for `jsep`
 	if (typeof exports === 'undefined') {
