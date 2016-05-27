@@ -1,4 +1,4 @@
-//     JavaScript Expression Parser (JSEP) 0.3.0
+//     JavaScript Expression Parser (JSEP) 0.3.1-beta
 //     JSEP may be freely distributed under the MIT License
 //     http://jsep.from.so/
 
@@ -116,7 +116,9 @@
 		// Parsing
 		// -------
 		// `expr` is a string with the passed in expression
-		jsep = function(expr) {
+		jsep = function(expr, options) {
+            options = options || {};
+
 			// `index` stores the character number we are currently at while `length` is a constant
 			// All of the gobbles below will modify `index` as we move along
 			var index = 0,
@@ -182,6 +184,11 @@
 						}
 						to_check = to_check.substr(0, --tc_len);
 					}
+
+                    // If something to the right and implicit multiplication, then binary op is '*'.
+                    if (options.implicitMultiplication && index < length)
+                        return '*';
+
 					return false;
 				},
 
@@ -350,6 +357,7 @@
 								case 'b': str += '\b'; break;
 								case 'f': str += '\f'; break;
 								case 'v': str += '\x0B'; break;
+								case '\\': str += '\\'; break;
 							}
 						} else {
 							str += ch;
@@ -545,7 +553,7 @@
 		};
 
 	// To be filled in by the template
-	jsep.version = '0.3.0';
+	jsep.version = '0.3.1-beta';
 	jsep.toString = function() { return 'JavaScript Expression Parser (JSEP) v' + jsep.version; };
 
 	/**

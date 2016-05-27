@@ -116,7 +116,9 @@
 		// Parsing
 		// -------
 		// `expr` is a string with the passed in expression
-		jsep = function(expr) {
+		jsep = function(expr, options) {
+            options = options || {};
+
 			// `index` stores the character number we are currently at while `length` is a constant
 			// All of the gobbles below will modify `index` as we move along
 			var index = 0,
@@ -182,6 +184,11 @@
 						}
 						to_check = to_check.substr(0, --tc_len);
 					}
+
+                    // If something to the right and implicit multiplication, then binary op is '*'.
+                    if (options.implicitMultiplication && index < length)
+                        return '*';
+
 					return false;
 				},
 

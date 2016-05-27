@@ -40,8 +40,8 @@ var filter_props = function(larger, smaller) {
 };
 
 var parse = jsep;
-var test_parser = function(inp, out) {
-	var parse_val = parse(inp);
+var test_parser = function(inp, out, options) {
+	var parse_val = parse(inp, options);
 	return deepEqual(filter_props(parse_val, out), out);
 };
 var esprima_comparison_test = function(str) {
@@ -96,6 +96,15 @@ test('Ops', function() {
 test('Custom ops', function() {
 	jsep.addBinaryOp("^", 10);
 	test_parser("a^b", {});
+});
+
+test('Implicit multiplication', function() {
+    test_parser("a b", {
+        type: 'BinaryExpression',
+        operator: '*',
+        left: {name: 'a'},
+        right: {name: 'b'}
+    }, { implicitMultiplication: true });
 });
 
 test('Bad Numbers', function() {
