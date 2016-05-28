@@ -57,6 +57,7 @@ test('Constants', function() {
 	test_parser('"abc"', {value: "abc"});
 	test_parser("123", {value: 123});
 	test_parser("12.3", {value: 12.3});
+	test_parser("12.34(5)", {value: {number: 12.34, uncertainty: 0.05}});
 });
 
 test('Variables', function() {
