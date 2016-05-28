@@ -116,7 +116,9 @@
 		// Parsing
 		// -------
 		// `expr` is a string with the passed in expression
-		jsep = function(expr) {
+		jsep = function(expr, options) {
+            options = options || {};
+
 			// `index` stores the character number we are currently at while `length` is a constant
 			// All of the gobbles below will modify `index` as we move along
 			var index = 0,
@@ -124,6 +126,7 @@
 				charCodeAtFunc = expr.charCodeAt,
 				exprI = function(i) { return charAtFunc.call(expr, i); },
 				exprICode = function(i) { return charCodeAtFunc.call(expr, i); },
+                numberMaker = options.numberMaker || function(s) { return parseFloat(s); },
 				length = expr.length,
 
 				// Push `index` up to the next non-space character
@@ -325,7 +328,7 @@
 
 					return {
 						type: LITERAL,
-						value: jsep.numberMaker(number),
+						value: numberMaker(number),
 						raw: number
 					};
 				},
@@ -595,17 +598,6 @@
 		}
 		return this;
 	};
-
-    /**
-     * Convert a numeric literal to a number.  The default implementation is to use parseFloat.
-     *
-     * @method jsep.numberMaker
-     * @param {string} numeric The string representation of a number.
-     * @return The numeric representation of the literal.
-     */
-    jsep.numberMaker = function(numeric) {
-        return parseFloat(numeric);
-    };
 
 	// In desktop environments, have a way to restore the old value for `jsep`
 	if (typeof exports === 'undefined') {
