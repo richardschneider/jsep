@@ -97,6 +97,18 @@
 				right: right
 			};
 		},
+    // Create a number.  If the uncertainty is zero, then the result of parseFloat() is returned; otherwise,
+    // a object with the number and uncertainty properties is returned.
+        createNumber = function(n, u) {
+            n = parseFloat(n);
+            u = parseFloat(u);
+            if (u === 0)
+                return n;
+            return {
+                number: n,
+                uncertainty: u
+            };
+        },
 		// `ch` is a character code in the next three functions
 		isDecimalDigit = function(ch) {
 			return (ch >= 48 && ch <= 57); // 0...9
@@ -128,7 +140,7 @@
 				charCodeAtFunc = expr.charCodeAt,
 				exprI = function(i) { return charAtFunc.call(expr, i); },
 				exprICode = function(i) { return charCodeAtFunc.call(expr, i); },
-                numberMaker = options.numberMaker || function(s) { return parseFloat(s); },
+                numberMaker = options.numberMaker || createNumber,
 				length = expr.length,
 
 				// Push `index` up to the next non-space character
@@ -298,7 +310,7 @@
 				// Parse simple numeric literals: `12`, `3.4`, `.5`. Do this by using a string to
 				// keep track of everything in the numeric literal and then calling `parseFloat` on that string
 				gobbleNumericLiteral = function() {
-					var number = '', ch, chCode;
+					var number = '', uncertainty = '', ch, chCode;
 					while(isDecimalDigit(exprICode(index))) {
 						number += exprI(index++);
 					}
@@ -325,7 +337,27 @@
 							throwError('Expected exponent (' + number + exprI(index) + ')', index);
 						}
 					}
-					
+
+                    else if (ch === '(') {  // uncertainty marker
+                        while (true) {
+                            ch = exprI(++index);
+                            if (ch === ')') {
+                                ++index;
+                                break;
+                            }
+                            else if (isDecimalDigit(exprICode(index)))
+                                uncertainty += ch;
+                            else
+                                throwError("Expected a digit or ')'", index);
+                        }
+                        uncertainty = number
+                            .slice(0, -uncertainty.length)
+                            .replace(/[1-9]/g, '0')
+                            .concat(uncertainty);
+
+                    }
+                    if (uncertainty.length === 0)
+                        uncertainty = '0';
 
 					chCode = exprICode(index);
 					if(chCode === PERIOD_CODE) {
@@ -334,7 +366,7 @@
 
 					var literal = {
 						type: LITERAL,
-						value: numberMaker(number),
+						value: numberMaker(number, uncertainty),
 						raw: number
 					};
 					// Check to make sure this isn't a variable name that start with a number (123abc)
