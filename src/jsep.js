@@ -307,20 +307,32 @@
 						return false;
 					}
 				},
+
+                goobleDigits = function() {
+                    var number = '';
+
+                    while (index < length) {
+                        if (isDecimalDigit(exprICode(index)))
+                            number += exprI(index++);
+                        else if (exprI(index) === options.digitGroupSeparator && isDecimalDigit(exprICode(index+1)))
+                            ++index;
+                        else
+                            break;
+                    }
+
+                    return number;
+                },
+
 				// Parse simple numeric literals: `12`, `3.4`, `.5`. Do this by using a string to
 				// keep track of everything in the numeric literal and then calling `parseFloat` on that string
 				gobbleNumericLiteral = function() {
 					var number = '', uncertainty = '', ch, chCode;
-					while(isDecimalDigit(exprICode(index))) {
-						number += exprI(index++);
-					}
+
+                    number += goobleDigits();
 
 					if(exprICode(index) === PERIOD_CODE) { // can start with a decimal marker
 						number += exprI(index++);
-
-						while(isDecimalDigit(exprICode(index))) {
-							number += exprI(index++);
-						}
+                        number += goobleDigits();
 					}
 					
 					ch = exprI(index);
