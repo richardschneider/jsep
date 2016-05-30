@@ -40,8 +40,8 @@ var filter_props = function(larger, smaller) {
 };
 
 var parse = jsep;
-var test_parser = function(inp, out) {
-	var parse_val = parse(inp);
+var test_parser = function(inp, out, options) {
+	var parse_val = parse(inp, options);
 	return deepEqual(filter_props(parse_val, out), out);
 };
 var esprima_comparison_test = function(str) {
@@ -57,7 +57,9 @@ test('Constants', function() {
 	test_parser('"abc"', {value: "abc"});
 	test_parser("123", {value: 123});
 	test_parser("12.3", {value: 12.3});
+	test_parser("12 345.678 9", {value: 12345.6789}, { digitGroupSeparator: ' ' });
 	test_parser("12.34(5)", {value: {number: 12.34, uncertainty: 0.05}});
+	test_parser("12 345.678 9(1)", {value: {number: 12345.6789, uncertainty: 0.0001}}, { digitGroupSeparator: ' ' });
 });
 
 test('Variables', function() {
