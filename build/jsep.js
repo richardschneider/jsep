@@ -33,6 +33,7 @@
 		QUMARK_CODE = 63, // ?
 		SEMCOL_CODE = 59, // ;
 		COLON_CODE  = 58, // :
+        PERCENT_CODE = 37, // %
 
 		throwError = function(message, index) {
 			var error = new Error(message + ' at character ' + index);
@@ -383,6 +384,7 @@
 						value: numberMaker(number, uncertainty),
 						raw: number
 					};
+
 					// Check to make sure this isn't a variable name that start with a number (123abc)
 					if(isIdentifierStart(chCode)) {
 						if(!jsep.allowImplicitCompound) {
@@ -394,6 +396,16 @@
 							body: [ literal, gobbleIdentifier() ]
 						};
 					}
+
+                    // Allow percentage, e.g. '10%'
+                    if (chCode === PERCENT_CODE) {
+                        return {
+                            type: UNARY_EXP,
+                            operator: exprI(index++),
+                            argument: literal,
+                            prefix: false
+                        };
+                    }
 
 					return literal;
 				},

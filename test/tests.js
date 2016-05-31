@@ -63,6 +63,14 @@ test('Constants', function() {
 	test_parser("12 345.678 9(1)", {value: {number: 12345.6789, uncertainty: 0.0001}}, { digitGroupSeparator: ' ' });
 });
 
+test('Percentage', function() {
+    test_parser("12%", {
+        type: "UnaryExpression",
+        operator: "%",
+        argument: { value: 12}
+    })
+});
+
 test('Variables', function() {
 	test_parser("abc", {name: "abc"});
 	test_parser("a.b[c[0]]", {
