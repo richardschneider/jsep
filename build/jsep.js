@@ -397,7 +397,9 @@
 						};
 					}
 
-                    // Allow percentage, e.g. '10%'
+                    // Allow percentage, e.g. '10%' or '10 %'.
+                    if (chCode === 32 && exprICode(index + 1) === PERCENT_CODE)
+                        chCode = exprICode(++index);
                     if (chCode === PERCENT_CODE) {
                         return {
                             type: UNARY_EXP,

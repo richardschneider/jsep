@@ -68,7 +68,12 @@ test('Percentage', function() {
         type: "UnaryExpression",
         operator: "%",
         argument: { value: 12}
-    })
+    });
+    test_parser("12 %", {
+        type: "UnaryExpression",
+        operator: "%",
+        argument: { value: 12}
+    });
 });
 
 test('Variables', function() {
