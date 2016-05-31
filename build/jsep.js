@@ -333,6 +333,9 @@
 
                     chCode = exprICode(index);
 					if(chCode === PERIOD_CODE || chCode === COMMA_CODE) { // can start with a decimal marker
+                        if (options.leadingDigit && number.length === 0) {
+                            throwError('A digit must preceed the decimal marker', index);
+                        }
 						number += '.';
                         ++index;
                         number += goobleDigits();

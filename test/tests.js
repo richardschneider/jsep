@@ -101,6 +101,13 @@ test('Arrays', function() {
 	});
 });
 
+test('Digit must preceed decimal marker', function() {
+    test_parser(".1", { value: 0.1 });
+	throws(function() {
+      jsep(".1", { leadingDigit: true });
+    }, Error, "A digit must preceed the decimal marker at character 1");
+});
+
 test('Number followed by literal', function() {
 	equal(jsep.allowImplicitCompound, false);
 
