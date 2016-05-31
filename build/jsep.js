@@ -330,8 +330,10 @@
 
                     number += goobleDigits();
 
-					if(exprICode(index) === PERIOD_CODE) { // can start with a decimal marker
-						number += exprI(index++);
+                    chCode = exprICode(index);
+					if(chCode === PERIOD_CODE || chCode === COMMA_CODE) { // can start with a decimal marker
+						number += '.';
+                        ++index;
                         number += goobleDigits();
 					}
 					
